@@ -1,12 +1,12 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+import { db } from "../_lib/prisma";
+
 import Header from "../_components/Header";
 import Search from "./_components/Search";
 import BookingItem from "../_components/BookingItem";
 import BarberShopItem from "./_components/BarberShopItem";
-import { db } from "../_lib/prisma";
-import { Divide } from "lucide-react";
 
 export default async function Home() {
   const barbershops = await db.barbershop.findMany({});
@@ -38,6 +38,17 @@ export default async function Home() {
       <div className="mt-6">
         <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">
           Recomendados
+        </h2>
+        <div className="flex px-5 gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {barbershops?.map((barbershop) => (
+            <BarberShopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-6 mb-[4.5rem]">
+        <h2 className="px-5 text-xs mb-3 uppercase text-gray-400 font-bold">
+          Mais populares
         </h2>
         <div className="flex px-5 gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {barbershops?.map((barbershop) => (
