@@ -6,7 +6,7 @@ import Search from "./_components/Search";
 import BookingItem from "../_components/BookingItem";
 import BarberShopItem from "./_components/BarberShopItem";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../_lib/auth";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
