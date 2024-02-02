@@ -21,6 +21,17 @@ import { cancelBooking } from "../_actions/CancelBooking";
 import { useToast } from "./ui/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
@@ -172,19 +183,39 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                 Voltar
               </Button>
             </SheetClose>
-            {!isPast(booking.date) && (
-              <Button
-                onClick={handleCancelClick}
-                className="w-full"
-                variant="destructive"
-                disabled={isDeleteLoading}
-              >
-                {isDeleteLoading && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                {!isPast(booking.date) && (
+                  <Button
+                    className="w-full"
+                    variant="destructive"
+                    disabled={isDeleteLoading}
+                  >
+                    {isDeleteLoading && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Cancelar Reserva
+                  </Button>
                 )}
-                Cancelar Reserva
-              </Button>
-            )}
+              </AlertDialogTrigger>
+              <AlertDialogContent className="w-[90%]">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Deseja mesmo cancelar sua reserva?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Uma vez cancelada não será possível reverter essa ação.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleCancelClick}>
+                    Confirmar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </SheetFooter>
         </div>
       </SheetContent>
